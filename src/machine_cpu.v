@@ -3,13 +3,17 @@
 `ifndef _CPU_V_
 `define _CPU_V_ 
 
-`include "cla4.v"
+`define _BLCA // use BCLA
 
-module machine_cpu(OUT, A, B);
+`include "add.v"
 
-input [15:0] OUT, A, B;
+module CPU(OUT, A, B);
 
-Add16 Add16_tst(OUT, A, B);
+input [31:0] A, B;
+output [31:0] OUT;
+wire carry;
+
+Add32 add(OUT, carry, A, B, 1'b0);
 
 endmodule
 

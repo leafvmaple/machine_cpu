@@ -1,12 +1,15 @@
-`include "add16.v"
+`include "add.v"
+
+`define _BLCA // use BCLA
 
 module stimulus16;
 
-reg [15:0] A, B, C;
+reg [31:0] A, B, C;
 reg SEL;
-wire [15:0] OUT;
+wire [31:0] OUT;
+wire carry;
 
-Add16 Add16_tst(OUT, A, B);
+Add32 Add16_tst(OUT, carry, A, B, SEL);
 
 initial
 begin
@@ -17,15 +20,15 @@ end
 
 initial
 begin
-  A = 16'h0; B = 16'h0; C = 16'h0; SEL = 1'b0;
-  #5 A = 16'h0; B = 16'h10; C = 16'h0; SEL = 1'b0;
-  #5 A = 16'h10; B = 16'h0; C = 16'h0; SEL = 1'b0;
-  #5 A = 16'h10; B = 16'h10; C = 16'h0; SEL = 1'b0;
-  #5 A = 16'h0; B = 16'h0; C = 16'h10; SEL = 1'b1;
-  #5 A = 16'h0; B = 16'h10; C = 16'h10; SEL = 1'b1;
-  #5 A = 16'h10; B = 16'h0; C = 16'h10; SEL = 1'b1;
-  #5 A = 16'h10; B = 16'h10; C = 16'h10; SEL = 1'b1;
-  #5 A = 16'h100; B = 16'h10; C = 16'h1; SEL = 1'b1;
+  A = 32'h0; B = 32'h0; C = 32'h0; SEL = 1'b0;
+  #5 A = 32'h0; B = 32'h10; C = 32'h0; SEL = 1'b0;
+  #5 A = 32'h10; B = 32'h0; C = 32'h0; SEL = 1'b0;
+  #5 A = 32'h10; B = 32'h10; C = 32'h0; SEL = 1'b0;
+  #5 A = 32'h0; B = 32'h0; C = 32'h10; SEL = 1'b1;
+  #5 A = 32'h0; B = 32'h10; C = 32'h10; SEL = 1'b1;
+  #5 A = 32'h10; B = 32'h0; C = 32'h10; SEL = 1'b1;
+  #5 A = 32'h10; B = 32'h10; C = 32'h10; SEL = 1'b1;
+  #5 A = 32'h100; B = 32'h10; C = 32'h1; SEL = 1'b1;
 end
 
 endmodule

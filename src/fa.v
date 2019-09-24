@@ -14,11 +14,7 @@ wire inetsum, carry1, carry2;
 HalfAdder ha1(inetsum, carry1, a, b);
 HalfAdder ha2(sum, carry2, c, inetsum);
 
-`ifdef CUSTOM_GATE
-    or(carry, carry1, carry2);
-`else
-    assign carry = carry1 | carry2;
-`endif
+assign carry = carry1 | carry2;
 
 endmodule
 

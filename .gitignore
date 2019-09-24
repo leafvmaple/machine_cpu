@@ -1,6 +1,7 @@
-/*.out
-/*.qsf
+*.out
+*.qsf
 c5_pin_model_dump.txt
 db
+simulation
 output_files
 incremental_db

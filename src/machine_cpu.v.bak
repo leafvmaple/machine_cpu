@@ -1,0 +1,18 @@
+// 16 bit Adder
+
+`ifndef _CPU_V_
+`define _CPU_V_ 
+
+`define _BLCA // use BCLA
+
+`include "add.v"
+
+module CPU(OUT, A, B);
+
+input [31:0] OUT, A, B;
+
+Add32 add(OUT, A, B, 1b'0);
+
+endmodule
+
+`endif
