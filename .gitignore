@@ -2,6 +2,7 @@
 *.qsf
 *.bak
 c5_pin_model_dump.txt
+machine_cpu_description.txt
 db
 simulation
 output_files

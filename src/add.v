@@ -3,6 +3,7 @@
 `ifndef _ADD_V_
 `define _ADD_V_ 
 
+`include "config.v"
 `include "cla4.v"
 
 module Add16(out, carry, a, b, c0);
@@ -14,7 +15,7 @@ input c0;
 
 wire [3:0] c, g, p;
 
-`ifdef _BLCA
+`ifdef _BCLA
     CLABase4 clabase(c, g, p, c0);
     BCLA4 bcla0(out[3:0],   g[0], p[0], a[3:0],   b[3:0],   1'b0);
     BCLA4 bcla1(out[7:4],   g[1], p[1], a[7:4],   b[7:4],   c[0]);
