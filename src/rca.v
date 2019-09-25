@@ -1,4 +1,4 @@
-// 4bit Ripple Carry Adder
+// Ripple Carry Adder
 `ifndef _RCA_V_
 `define _RCA_V_ 
 

@@ -1,4 +1,4 @@
-// 16 bit Adder
+// Adder
 
 `ifndef _ADD_V_
 `define _ADD_V_ 

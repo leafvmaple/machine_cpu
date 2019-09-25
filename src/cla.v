@@ -1,4 +1,4 @@
-// 4bit Carry Look-ahead Adder
+// Carry Look-ahead Adder
 `ifndef _CLA_V_
 `define _CLA_V_
 

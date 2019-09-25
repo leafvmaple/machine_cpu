@@ -1,8 +1,8 @@
-`include "add.v"
-`include "mul.v"
-`include "div.v"
+`include "alu/add.v"
+`include "alu/mul.v"
+`include "alu/div.v"
 
-module stimulus16;
+module Stimulus32;
 
 reg [31:0] A, B, C;
 reg [63:0] A64;
