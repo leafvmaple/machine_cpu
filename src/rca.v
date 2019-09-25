@@ -1,6 +1,6 @@
 // 4bit Ripple Carry Adder
-`ifndef _RCA4_V_
-`define _RCA4_V_ 
+`ifndef _RCA_V_
+`define _RCA_V_ 
 
 `include "fa.v"
 `include "ha.v"

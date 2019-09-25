@@ -4,7 +4,7 @@
 `define _ADD_V_ 
 
 `include "config.v"
-`include "cla4.v"
+`include "cla.v"
 
 module Add16(out, carry, a, b, c0);
 
