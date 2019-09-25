@@ -4,25 +4,26 @@
 `include "const.v"
 `include "add.v"
 
-`define PLUS  5'b00000
-`define MINUS 5'b00001
-`define MUL   5'b00010
-`define DIV   5'b00011
-`define AND   5'b00100
-`define OR    5'B00101
+`define AND   4'b0000
+`define OR    4'b0001
+`define ADD   4'b0010
+`define MINUS 4'b0110
 
-module ALU(out, func, A, B);
+`define MUL   4'b0011
+`define DIV   4'b0100
+
+module ALU(out, aluCtr, A, B);
 
 output reg [31:0] out;
 input [31:0] A, B;
-input [5:0] func;
+input [3:0] aluCtr;
 
-always @(func, A, B) begin
-    case (func)
+always @(aluCtr, A, B) begin
+    case (aluCtr)
     `ifdef _CUSTOM_GATE
-        `PLUS: Add32(out, carry, A, B, 1'b0)
+        `ADD: Add32(out, carry, A, B, 1'b0)
     `else
-        `PLUS:  out = A + B;
+        `ADD:   out = A + B;
         `MINUS: out = A - B;
         `MUL:   out = A * B;
         `DIV:   out = A / B;
