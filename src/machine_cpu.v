@@ -4,6 +4,7 @@
 `define _CPU_V_ 
 
 `include "decoder.v"
+`include "reg.v"
 
 module CPU(inst);
 
@@ -15,13 +16,22 @@ wire [3:0] aluCtr;
 wire [1:0] aluOp;
 
 wire [31:0] a, b, out;
+wire [31:0] sreg, treg, dreg;
 
-reg [31:0] regs[31:0];
+reg clk;
+
+initial
+begin
+    #1 clk = 1;
+    #1 clk = 0;
+end
 
 Decoder decoder(aluOp, rs, rt, rd, funct, inst);
 ALUDecoder aluDecoder(aluCtr, aluOp, funct);
 
-ALU alu(regs[rd], aluCtr, regs[rs], regs[rt]);
+Register register(sreg, treg, 1'b1, rs, rt, rd, dreg, clk);
+
+ALU alu(dreg, aluCtr, sreg, treg);
 
 endmodule
 
