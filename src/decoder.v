@@ -46,47 +46,60 @@ end
 
 endmodule
 
-module Decoder(aluOpSig, regDstSig, regWrSig, aluImmSig, rs, rt, rd, shamt, funct, inst);
+module Decoder(alu_op_sig, reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, rs, rt, rd, shamt, funct, inst);
 
 output [5:0] funct;
 output [4:0] rs, rt, rd, shamt;
-output reg [1:0] aluOpSig;
-output reg regDstSig, regWrSig, aluImmSig;
+output reg [1:0] alu_op_sig;
+output reg reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig;
 input [31:0] inst;
 
 wire [5:0] op;
 
 initial begin
-    regDstSig = 0;
-    aluImmSig = 0;
-    regWrSig  = 0;
+    reg_dst_sig  = 0;
+    reg_wrt_sig  = 0;
+    mem_read_sig = 0;
+    mem_wrt_sig  = 0;
+    mem_reg_sig  = 0;
+    alu_src_sig  = 0;
 end
 
 assign {op, rs, rt, rd, shamt, funct} = inst;
 
 always @(op) begin
     $display($time, " [ALU] Opcode = %b ", op);
-    regDstSig = 0;
-    aluImmSig = 0;
-    regWrSig  = 0;
+    reg_dst_sig  = 0;
+    reg_wrt_sig  = 0;
+    mem_read_sig = 0;
+    mem_wrt_sig  = 0;
+    mem_reg_sig  = 0;
+    alu_src_sig  = 0;
     case (op)
         6'b000000: begin 
-            aluOpSig  = 2'b10;       // R Instruction
-            regDstSig = 1;
-            regWrSig  = 1;
+            alu_op_sig  = 2'b10;       // R Instruction
+            reg_wrt_sig = 1;
+            reg_dst_sig = 1;
         end
         6'b100011: begin
-            aluOpSig  = 2'b00;       // LW
-            regWrSig  = 1;
+            alu_op_sig  = 2'b00;       // LW
+            reg_wrt_sig  = 1;
+            mem_read_sig = 1;
+            alu_src_sig  = 1;
         end
-        6'b101011: aluOpSig = 2'b00; // SW
-        6'b000100: aluOpSig = 2'b01; // BEQ
+        6'b101011: begin
+            alu_op_sig = 2'b00;        // SW
+            mem_wrt_sig = 1;
+            mem_reg_sig = 1;
+            alu_src_sig = 1;
+        end
+        6'b000100: alu_op_sig = 2'b01; // BEQ
         6'b001101: begin
-            aluOpSig  = 2'b11;       // ORI
-            aluImmSig = 1;
-            regWrSig  = 1;
+            alu_op_sig  = 2'b11;       // ORI
+            alu_src_sig = 1;
+            reg_wrt_sig = 1;
         end
-        default: aluOpSig = 2'b10;
+        default: alu_op_sig = 2'b10;
     endcase
 end
 

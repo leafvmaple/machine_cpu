@@ -4,13 +4,12 @@
 `define _MACHINE_V_ 
 
 `include "cpu_top.v"
-`include "bios.v"
 `include "mem.v"
 
 module Board;
 
 wire [31:0] addr_bus;
-wire [31:0] data_bus;
+wire [31:0] data_bus_up, data_bus_down;
 
 reg clk;
 
@@ -21,9 +20,9 @@ end
 
 always #1 clk = ~clk;
 
-BIOS bios(data_bus, addr_bus, clk);
+Memory mem(data_bus_up, data_bus_down, addr_bus, mem_read, mem_wrt, clk);
 
-CPU cpu(addr_bus, data_bus);
+CPU cpu(addr_bus, data_bus_down, mem_read, mem_wrt, data_bus_up);
 
 endmodule
 
