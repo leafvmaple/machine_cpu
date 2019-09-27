@@ -8,7 +8,7 @@ input regWr, clk;
 input [4:0] addr0, addr1, addrWr;
 input [31:0] in;
 
-reg [31:0] regfile[4:0];
+reg [31:0] regfile[31:0];
 
 initial
 begin
@@ -19,7 +19,7 @@ assign out0 = regfile[addr0];
 assign out1 = regfile[addr1];
 
 always @(posedge clk) begin
-    if (regWr) regfile[addrWr] <= in;
+    if (regWr) regfile[addrWr] = in;
 end
 
 endmodule
