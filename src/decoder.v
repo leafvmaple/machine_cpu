@@ -56,10 +56,16 @@ input [31:0] inst;
 
 wire [5:0] op;
 
+initial begin
+    regDstSig = 0;
+    aluImmSig = 0;
+    regWrSig  = 0;
+end
+
 assign {op, rs, rt, rd, shamt, funct} = inst;
 
 always @(op) begin
-    $display($time, " op = %b ", op);
+    $display($time, " [ALU] Opcode = %b ", op);
     regDstSig = 0;
     aluImmSig = 0;
     regWrSig  = 0;

@@ -20,6 +20,7 @@ assign out1 = regfile[addr1];
 
 always @(posedge clk) begin
     if (regWr) regfile[addrWr] = in;
+    $display($time, " [Register] regWr = %d addrWr = %d in = %d", regWr, addrWr, regfile[addrWr]);
 end
 
 endmodule
