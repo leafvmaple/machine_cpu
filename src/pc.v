@@ -1,10 +1,10 @@
 `ifndef _PC_V_
 `define _PC_V_
 
-module PC(out, pcWr, in, clk);
+module PC(out, wrt_sig, in, clk);
 
 output [31:0] out;
-input pcWr;
+input wrt_sig;
 input [31:0] in;
 input clk;
 
@@ -18,7 +18,7 @@ end
 assign out = pc;
 
 always @(posedge clk) begin
-    if (pcWr) pc = in;
+    if (wrt_sig) pc = in;
     else pc = pc + 1;
     $display($time, " [PC] Update = %d", pc);
 end
