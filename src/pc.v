@@ -19,8 +19,8 @@ assign out = pc;
 
 always @(posedge clk) begin
     if (wrt_sig) pc = in;
-    else pc = pc + 1;
-    $display($time, " [PC] Update = %d", pc);
+    else pc = pc + 4;
+    $display($time, " [PC] Update = %d ---------------------------------- ", pc);
 end
 
 endmodule

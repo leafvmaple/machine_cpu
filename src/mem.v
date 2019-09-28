@@ -10,13 +10,13 @@ input [31:0] addr;
 input mem_read_sig, mem_wrt_sig;
 input clk;
 
-reg [31:0] mem[256:0];
+reg [7:0] mem[1023:0];
 
-always @(mem_read_sig) out = mem[addr];
+always @(mem_read_sig) out = {mem[addr + 3], mem[addr + 2], mem[addr + 1], mem[addr]};
 
 always @(posedge clk) begin
-    if (mem_wrt_sig) mem[addr] = in;
-    $display($time, " [Memory] addr = %d in = %d", addr, mem[addr]);
+    if (mem_wrt_sig) {mem[addr + 3], mem[addr + 2], mem[addr + 1], mem[addr]} = in;
+    $display($time, " [Memory] addr = %d in = %d", addr, in);
 end
 
 endmodule
