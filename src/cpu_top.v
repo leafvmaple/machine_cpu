@@ -48,7 +48,7 @@ always @(clk) #2.5 pc_clk = ~pc_clk;
 ////////////////////////
 
 /*Program Counter*/
-PC pc(addr_inst, zf & branch_sig, {16'hffff, imm16_data}, pc_clk);
+PC pc(addr_inst, zf & branch_sig, {{16{imm16_data[15]}}, imm16_data}, pc_clk);
 
 /*Instruction Register*/
 IRegister ir(inst, addr_inst, clk);
