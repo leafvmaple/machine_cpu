@@ -12,9 +12,10 @@
 `define MUL   4'b0011
 `define DIV   4'b0100
 
-module ALU(out, aluCtr, A, B);
+module ALU(out, zf, aluCtr, A, B);
 
 output reg [31:0] out;
+output reg zf;
 input [31:0] A, B;
 input [3:0] aluCtr;
 
@@ -32,6 +33,9 @@ always @(aluCtr, A, B) begin
     `endif
         default: out = 0;
     endcase
+    if (out == 0) zf = 1;
+    else zf = 0;
+    $display($time, " [ALU] aluCtr = %b zf = %b A = %d B = %d ", aluCtr, zf, A, B);
 end
 
 endmodule

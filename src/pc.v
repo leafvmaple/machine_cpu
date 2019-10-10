@@ -1,10 +1,10 @@
 `ifndef _PC_V_
 `define _PC_V_
 
-module PC(out, wrt_sig, in, clk);
+module PC(out, jump_sig, in, clk);
 
 output [31:0] out;
-input wrt_sig;
+input jump_sig;
 input [31:0] in;
 input clk;
 
@@ -18,9 +18,10 @@ end
 assign out = pc;
 
 always @(posedge clk) begin
-    if (wrt_sig) pc = in;
-    else pc = pc + 4;
-    $display($time, " [PC] Update = %d ---------------------------------- ", pc);
+    pc = pc + 4;
+    if (jump_sig) pc = pc + (in << 2);
+    else pc = pc;
+    $display($time, " [PC] Update = %d jump_sig = %b in = %d --------------------- ", pc, jump_sig, in);
 end
 
 endmodule

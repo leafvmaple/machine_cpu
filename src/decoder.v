@@ -46,12 +46,12 @@ end
 
 endmodule
 
-module Decoder(alu_op_sig, reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, rs, rt, rd, shamt, funct, inst);
+module Decoder(alu_op_sig, reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig, rs, rt, rd, shamt, funct, inst);
 
 output [5:0] funct;
 output [4:0] rs, rt, rd, shamt;
 output reg [1:0] alu_op_sig;
-output reg reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig;
+output reg reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig;
 input [31:0] inst;
 
 wire [5:0] op;
@@ -63,18 +63,20 @@ initial begin
     mem_wrt_sig  = 0;
     mem_reg_sig  = 0;
     alu_src_sig  = 0;
+    branch_sig   = 0;
 end
 
 assign {op, rs, rt, rd, shamt, funct} = inst;
 
 always @(op) begin
-    $display($time, " [ALU] Opcode = %b ", op);
+    $display($time, " [Decoder] Opcode = %b ", op);
     reg_dst_sig  = 0;
     reg_wrt_sig  = 0;
     mem_read_sig = 0;
     mem_wrt_sig  = 0;
     mem_reg_sig  = 0;
     alu_src_sig  = 0;
+    branch_sig   = 0;
     case (op)
         6'b000000: begin 
             alu_op_sig  = 2'b10;       // R Instruction
@@ -94,7 +96,10 @@ always @(op) begin
             mem_reg_sig = 1;
             alu_src_sig = 1;
         end
-        6'b000100: alu_op_sig = 2'b01; // BEQ
+        6'b000100: begin 
+            alu_op_sig = 2'b01; // BEQ
+            branch_sig = 1;
+        end
         6'b001101: begin
             alu_op_sig  = 2'b11;       // ORI
             alu_src_sig = 1;
