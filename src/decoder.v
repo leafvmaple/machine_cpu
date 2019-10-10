@@ -85,6 +85,7 @@ always @(op) begin
             alu_op_sig  = 2'b00;       // LW
             reg_wrt_sig  = 1;
             mem_read_sig = 1;
+            mem_reg_sig  = 1;
             alu_src_sig  = 1;
         end
         6'b101011: begin
