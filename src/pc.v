@@ -20,7 +20,6 @@ assign out = pc;
 always @(posedge clk) begin
     pc = pc + 4;
     if (jump_sig) pc = pc + (in << 2);
-    else pc = pc;
     $display($time, " [PC] Update = %d jump_sig = %b in = %d --------------------- ", pc, jump_sig, in);
 end
 
