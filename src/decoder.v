@@ -34,7 +34,7 @@ always @(aluOp) begin
             case (funct)
                 6'b100000: aluCtr = 4'b0010; // ADD
                 6'b100010: aluCtr = 4'b0110; // SUB
-                6'b100100: aluCtr = 4'b0000; // ADD
+                6'b100100: aluCtr = 4'b0000; // AND
                 6'b100101: aluCtr = 4'b0001; // OR
                 default: aluCtr = 4'b0000;
             endcase
@@ -99,7 +99,7 @@ always @(op) begin
             alu_src_sig = 1;
         end
         6'b000100: begin 
-            alu_op_sig = 2'b01; // BEQ
+            alu_op_sig = 2'b01;        // BEQ
             branch_sig = 1;
         end
         6'b001101: begin
@@ -107,7 +107,7 @@ always @(op) begin
             alu_src_sig = 1;
             reg_wrt_sig = 1;
         end
-        6'b000010: begin
+        6'b000010: begin               // J
             jump_sig = 1;
         end
         default: alu_op_sig = 2'b10;
