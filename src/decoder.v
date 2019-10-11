@@ -46,12 +46,12 @@ end
 
 endmodule
 
-module Decoder(alu_op_sig, reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig, rs, rt, rd, shamt, funct, inst);
+module Decoder(alu_op_sig, reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig, jump_sig, rs, rt, rd, shamt, funct, inst);
 
 output [5:0] funct;
 output [4:0] rs, rt, rd, shamt;
 output reg [1:0] alu_op_sig;
-output reg reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig;
+output reg reg_dst_sig, reg_wrt_sig, mem_read_sig, mem_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig, jump_sig;
 input [31:0] inst;
 
 wire [5:0] op;
@@ -77,6 +77,7 @@ always @(op) begin
     mem_reg_sig  = 0;
     alu_src_sig  = 0;
     branch_sig   = 0;
+    jump_sig     = 0;
     case (op)
         6'b000000: begin 
             alu_op_sig  = 2'b10;       // R Instruction
@@ -104,6 +105,9 @@ always @(op) begin
             alu_op_sig  = 2'b11;       // ORI
             alu_src_sig = 1;
             reg_wrt_sig = 1;
+        end
+        6'b000010: begin
+            jump_sig = 1;
         end
         default: alu_op_sig = 2'b10;
     endcase

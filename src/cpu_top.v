@@ -20,10 +20,11 @@ wire [4:0] rs, rt, rd, shamt;
 
 wire [3:0] alu_ctr_sig;
 wire [1:0] alu_op_sig;
-wire reg_dst_sig, reg_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig, zf;
+wire reg_dst_sig, reg_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig, jump_sig, zf;
 
 wire [31:0] src_data, rt_data, alu_out;
 wire [15:0] imm16_data;
+wire [25:0] imm26_data;
 
 reg clk, pc_clk;
 
@@ -45,7 +46,7 @@ always @(clk) #2.5 pc_clk = ~pc_clk;
 ////////////////////////
 
 /*Program Counter*/
-PC pc(addr_inst, zf & branch_sig, {{16{imm16_data[15]}}, imm16_data}, pc_clk);
+PC pc(addr_inst, zf & branch_sig, jump_sig, imm16_data, imm26_data, pc_clk);
 
 /*Instruction Register*/
 IRegister ir(inst, addr_inst, clk);
@@ -63,6 +64,7 @@ Decoder decoder(alu_op_sig,
                 mem_reg_sig,
                 alu_src_sig,
                 branch_sig,
+                jump_sig,
                 rs,
                 rt,
                 rd,
@@ -87,6 +89,7 @@ Register register(src_data,
                   clk);
 
 assign imm16_data = inst[15:0];
+assign imm26_data = inst[25:0];
 assign data_bus_out = rt_data;
 
 ////////////////////////
