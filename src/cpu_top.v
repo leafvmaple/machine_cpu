@@ -39,7 +39,7 @@ end
 
 always #1 clk = ~clk;
 
-always @(clk) #2.5 pc_clk = ~pc_clk;
+always @(clk) #4 pc_clk = ~pc_clk;
 
 ////////////////////////
 /// Load Instruction ///
