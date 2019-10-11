@@ -15,20 +15,18 @@ output [31:0] data_bus_out;
 output mem_read, mem_wrt;
 input [31:0] data_bus_in;
 
-wire [5:0] funct;
-wire [4:0] rs, rt, rd, shamt;
+wire [4:0] rs, rt, rd;
 
 wire [3:0] alu_ctr_sig;
-wire [1:0] alu_op_sig;
 wire reg_dst_sig, reg_wrt_sig, mem_reg_sig, alu_src_sig, branch_sig, jump_sig, zf;
 
 wire [31:0] src_data, rt_data, alu_out;
 wire [15:0] imm16_data;
 wire [25:0] imm26_data;
+wire [31:0] inst, addr_inst;
 
 reg clk, pc_clk;
 
-wire [31:0] inst, addr_inst;
 
 /*Initial*/
 initial
@@ -56,7 +54,7 @@ IRegister ir(inst, addr_inst, clk);
 ////////////////////////
 
 /* Decoder */
-Decoder decoder(alu_op_sig,
+Decoder decoder(alu_ctr_sig,
                 reg_dst_sig,
                 reg_wrt_sig,
                 mem_read,
@@ -68,11 +66,7 @@ Decoder decoder(alu_op_sig,
                 rs,
                 rt,
                 rd,
-                shamt,
-                funct,
                 inst);
-
-ALUDecoder aluDecoder(alu_ctr_sig, alu_op_sig, funct);
 
 ////////////////////
 /// Visit Memery ///
