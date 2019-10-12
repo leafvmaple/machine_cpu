@@ -1,3 +1,5 @@
+; MIPS Lite
+
 ori $v0, $zero, 38
 ori $v1, $zero, 52
 add $s0, $v1, $v0
