@@ -58,8 +58,6 @@ always @(clk) #4 pc_clk = ~pc_clk;
 PC pc(pc_out, pc_back, pc_clk);
 
 assign pc_added = pc_out + 4;
-assign pc_branched = (zf & branch_sig)? (pc_added + imm16_data << 2) : pc_added;
-assign pc_back = jump_sig ? {pc_added[31:28], imm26_data << 2} : pc_added;
 
 /* Instruction Register */
 IRegister ir(inst, pc_out, clk);
@@ -100,6 +98,9 @@ assign imm26_data = inst[25:0];
 ///    Excute    ///
 ////////////////////
 ALU alu(alu_out, zf, alu_ctr_sig, src_data, alu_src_sig ? imm16_data : rt_data);
+
+assign pc_branched = (zf & branch_sig)? (pc_added + imm16_data << 2) : pc_added;
+assign pc_back = jump_sig ? {pc_added[31:28], imm26_data << 2} : pc_branched;
 
 ////////////////////
 ///    Memery    ///
