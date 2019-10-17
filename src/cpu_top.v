@@ -13,8 +13,11 @@ module CPU;
 
 reg clk, pc_clk;
 
+// PC
+wire [31:0] pc_out, pc_added, pc_branched, pc_back;
+
 // IF
-wire [31:0] inst, addr_inst;
+wire [31:0] inst;
 
 // ID
 wire [4:0] rs, rt, rd;
@@ -52,10 +55,14 @@ always @(clk) #4 pc_clk = ~pc_clk;
 /////////////////////////
 
 /* Program Counter */
-PC pc(addr_inst, zf & branch_sig, jump_sig, imm16_data, imm26_data, pc_clk);
+PC pc(pc_out, pc_back, pc_clk);
+
+assign pc_added = pc_out + 4;
+assign pc_branched = (zf & branch_sig)? (pc_added + imm16_data << 2) : pc_added;
+assign pc_back = jump_sig ? {pc_added[31:28], imm26_data << 2} : pc_added;
 
 /* Instruction Register */
-IRegister ir(inst, addr_inst, clk);
+IRegister ir(inst, pc_out, clk);
 
 //////////////////////////
 /// Instruction Decode ///
