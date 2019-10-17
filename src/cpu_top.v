@@ -25,11 +25,12 @@ wire [31:0] src_data, rt_data;
 
 wire [15:0] imm16_data;
 wire [25:0] imm26_data;
+wire [31:0] imm32_data;
 
 // EX
 wire zf;
 wire [31:0] alu_out;
-wire [31:0] pc_branched, pc_back
+wire [31:0] pc_branched, pc_back;
 
 // MEM
 wire [31:0] mem_out;
@@ -93,12 +94,14 @@ Register register(src_data,
 assign imm16_data = inst[15:0];
 assign imm26_data = inst[25:0];
 
+assign imm32_data = {{16{imm16_data[15]}}, imm16_data};
+
 ////////////////////
 ///    Excute    ///
 ////////////////////
-ALU alu(alu_out, zf, alu_ctr_sig, src_data, alu_src_sig ? imm16_data : rt_data);
+ALU alu(alu_out, zf, alu_ctr_sig, src_data, alu_src_sig ? imm32_data : rt_data);
 
-assign pc_branched = (zf & branch_sig)? (pc_added + imm16_data << 2) : pc_added;
+assign pc_branched = (zf & branch_sig)? (pc_added + imm32_data << 2) : pc_added;
 assign pc_back = jump_sig ? {pc_added[31:28], imm26_data << 2} : pc_branched;
 
 ////////////////////
