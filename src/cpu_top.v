@@ -13,10 +13,8 @@ module CPU;
 
 reg clk, pc_clk;
 
-// PC
-wire [31:0] pc_out, pc_added, pc_branched, pc_back;
-
 // IF
+wire [31:0] pc_out, pc_added;
 wire [31:0] inst;
 
 // ID
@@ -31,6 +29,7 @@ wire [25:0] imm26_data;
 // EX
 wire zf;
 wire [31:0] alu_out;
+wire [31:0] pc_branched, pc_back
 
 // MEM
 wire [31:0] mem_out;
