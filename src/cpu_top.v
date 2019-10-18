@@ -33,6 +33,9 @@ wire [31:0] pc_jump;
 reg [31:0] src_data_ex, rt_data_ex;
 reg [31:0] imm32_data_ex, pc_added_ex, pc_jump_ex;
 
+reg [3:0] alu_ctr_sig_ex;
+reg mem_read_rig_ex, mem_wrt_rig_ex, mem_reg_sig_ex, alu_src_sig_ex, branch_sig_ex, jump_sig_ex;
+
 // EX
 wire zf;
 wire [31:0] alu_out;
@@ -40,12 +43,14 @@ wire [31:0] pc_branched, pc_back;
 
 reg [31:0] rt_data_mem;
 reg [31:0] alu_out_mem;
+reg mem_read_rig_mem, mem_wrt_rig_mem, mem_reg_sig_mem;
 
 // MEM
 wire [31:0] mem_out;
 
 reg [31:0] alu_out_wb;
 reg [31:0] mem_out_wb;
+reg mem_reg_sig_wb;
 
 // WB
 wire [31:0] back_data;
@@ -54,19 +59,19 @@ wire [31:0] back_data;
 initial
 begin
     clk = 0;
-    pc_clk = 0;
+    inst_id = 0;
+    branch_sig_ex = 0;
+    jump_sig_ex = 0;
 end
 
 always #1 clk = ~clk;
-
-always @(clk) #4 pc_clk = ~pc_clk;
 
 /////////////////////////
 /// Instruction Fetch ///
 /////////////////////////
 
 /* Program Counter */
-PC pc(pc_out, pc_back, pc_clk);
+PC pc(pc_out, (branch_sig_ex | jump_sig_ex) ? pc_back : pc_added, clk);
 
 assign pc_added = pc_out + 4;
 
@@ -119,19 +124,31 @@ always @(posedge clk) begin
     imm32_data_ex = imm32_data;
     pc_added_ex = pc_added_id;
     pc_jump_ex = pc_jump;
+
+    // Control
+    alu_ctr_sig_ex = alu_ctr_sig;
+    mem_read_rig_ex = mem_read_rig;
+    mem_wrt_rig_ex = mem_wrt_rig;
+    mem_reg_sig_ex = mem_reg_sig;
+    alu_src_sig_ex = alu_src_sig;
+    branch_sig_ex = branch_sig;
+    jump_sig_ex = jump_sig;
 end
 
 ////////////////////
 ///    Excute    ///
 ////////////////////
-ALU alu(alu_out, zf, alu_ctr_sig, src_data_ex, alu_src_sig ? imm32_data_ex : rt_data_ex);
+ALU alu(alu_out, zf, alu_ctr_sig_ex, src_data_ex, alu_src_sig_ex ? imm32_data_ex : rt_data_ex);
 
-assign pc_branched = (zf & branch_sig)? (pc_added_ex + imm32_data_ex << 2) : pc_added_ex;
-assign pc_back = jump_sig ? pc_jump_ex : pc_branched;
+assign pc_branched = (zf & branch_sig_ex)? (pc_added_ex + imm32_data_ex << 2) : pc_added_ex;
+assign pc_back = jump_sig_ex ? pc_jump_ex : pc_branched;
 
 always @(posedge clk) begin
     alu_out_mem = alu_out;
     rt_data_mem = rt_data_ex;
+    mem_read_rig_mem = mem_read_rig_ex;
+    mem_wrt_rig_mem = mem_wrt_rig_ex;
+    mem_reg_sig_mem = mem_reg_sig_ex;
 end
 
 ////////////////////
@@ -139,17 +156,18 @@ end
 ////////////////////
 
 /* Cache Memory */
-Memory mem(mem_out, rt_data_mem, alu_out_mem, mem_read_rig, mem_wrt_rig, clk);
+Memory mem(mem_out, rt_data_mem, alu_out_mem, mem_read_rig_mem, mem_wrt_rig_mem, clk);
 
 always @(posedge clk) begin
     mem_out_wb = mem_out;
     alu_out_wb = alu_out_mem;
+    mem_reg_sig_wb = mem_reg_sig_mem;
 end
 
 ////////////////////////
 ///    Write Back    ///
 ////////////////////////
-assign back_data = mem_reg_sig ? mem_out_wb : alu_out_wb;
+assign back_data = mem_reg_sig_wb ? mem_out_wb : alu_out_wb;
 
 endmodule
 

@@ -16,7 +16,7 @@ always @(mem_read_sig) out = {mem[addr + 3], mem[addr + 2], mem[addr + 1], mem[a
 
 always @(posedge clk) begin
     if (mem_wrt_sig) {mem[addr + 3], mem[addr + 2], mem[addr + 1], mem[addr]} = in;
-    $display($time, " [Memory] addr = %d in = %d", addr, in);
+    $display($time, " [4 Memory] addr = %d out = %d in = %d", addr, out, in);
 end
 
 endmodule

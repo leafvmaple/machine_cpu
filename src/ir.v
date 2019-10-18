@@ -20,15 +20,15 @@ begin
     in[4] = 32'hae020001;
     in[5] = 32'h8e030001;
     //in[6] = 32'h1043fffd;
-    in[6] = 32'h08000003;
+    //in[6] = 32'h08000003;
 
     for (i = 0; i < 32; i++)
         {ir[i * 4 + 3], ir[i * 4 + 2], ir[i * 4 + 1], ir[i * 4]} = in[i];
 end
 
-always @(posedge clk) begin
+always @(posedge clk, addr) begin
     out = {ir[addr + 3], ir[addr + 2], ir[addr + 1], ir[addr]};
-    $display($time, " [IR] Instruction = %b", out);
+    $display($time, " [1 IR] Instruction = %b", out);
 end
 
 endmodule

@@ -18,7 +18,7 @@ assign out = pc;
 
 always @(posedge clk) begin
     pc = in;
-    $display($time, " [PC] Update = %d -----------------------------", in);
+    $display($time, " [1 PC] Update = %d -----------------------------", in);
 end
 
 endmodule

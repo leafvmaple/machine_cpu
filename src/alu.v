@@ -35,7 +35,7 @@ always @(aluCtr, A, B) begin
     endcase
     if (out == 0) zf = 1;
     else zf = 0;
-    $display($time, " [ALU] aluCtr = %b zf = %b A = %d B = %d ", aluCtr, zf, A, B);
+    $display($time, " [3 ALU] aluCtr = %b zf = %b A = %d B = %d ", aluCtr, zf, A, B);
 end
 
 endmodule

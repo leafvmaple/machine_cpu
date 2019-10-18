@@ -70,7 +70,7 @@ end
 assign {op, rs, rt, rd, shamt, funct} = inst;
 
 always @(op) begin
-    $display($time, " [Decoder] Opcode = %b ", op);
+    $display($time, " [2 Decoder] Opcode = %b ", op);
     reg_dst_sig  = 0;
     reg_wrt_sig  = 0;
     mem_read_sig = 0;
