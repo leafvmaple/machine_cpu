@@ -26,6 +26,7 @@ wire [31:0] src_data, rt_data;
 wire [15:0] imm16_data;
 wire [25:0] imm26_data;
 wire [31:0] imm32_data;
+wire [31:0] pc_jump;
 
 // EX
 wire zf;
