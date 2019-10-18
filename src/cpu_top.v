@@ -95,6 +95,7 @@ assign imm16_data = inst[15:0];
 assign imm26_data = inst[25:0];
 
 assign imm32_data = {{16{imm16_data[15]}}, imm16_data};
+assign pc_jump = {pc_added[31:28], imm26_data << 2};
 
 ////////////////////
 ///    Excute    ///
@@ -102,7 +103,7 @@ assign imm32_data = {{16{imm16_data[15]}}, imm16_data};
 ALU alu(alu_out, zf, alu_ctr_sig, src_data, alu_src_sig ? imm32_data : rt_data);
 
 assign pc_branched = (zf & branch_sig)? (pc_added + imm32_data << 2) : pc_added;
-assign pc_back = jump_sig ? {pc_added[31:28], imm26_data << 2} : pc_branched;
+assign pc_back = jump_sig ? pc_jump : pc_branched;
 
 ////////////////////
 ///    Memery    ///
